@@ -265,14 +265,15 @@
 		grupo,
 		presentes
 	  };
+	  
+	fetch("https://script.google.com/macros/s/AKfycbydGNE5eCvVHgd5fyPEfwDqltmNVAyYq1jtoO0yXEhgXHUr7UljAY6OQYovI-rU9Am8/exec", {
+  method: "POST",
+  body: JSON.stringify(datos),
+  headers: {
+    "Content-Type": "application/json"
+  }
+})
 
-	  fetch("https://script.google.com/macros/s/AKfycbydGNE5eCvVHgd5fyPEfwDqltmNVAyYq1jtoO0yXEhgXHUr7UljAY6OQYovI-rU9Am8/exec", {
-		method: "POST",
-		body: JSON.stringify(datos),
-		headers: {
-		  "Content-Type": "application/json"
-		}
-	  })
 	  .then(res => res.text())
 	  .then(respuesta => {
 		alert("✅ Asistencia guardada en Google Sheets");
@@ -283,3 +284,4 @@
 	}
 
 </script>
+
