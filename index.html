@@ -1,161 +1,252 @@
+### Código completo y funcional
+
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>Asistencia TDM Ferro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: sans-serif;
-      background: #d4f4d2;
-      padding: 20px;
+    :root{
+      --bg:#d4f4d2;
+      --accent:#145c2c;
+      --card:#fff;
+      --btn:#28a745;
+      --btn-hover:#218838;
+      --danger:#ffe6e6;
     }
-    h1 {
-      text-align: center;
-      color: #145c2c;
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background:var(--bg);
+      padding:20px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+    h1{
+      text-align:center;
+      color:var(--accent);
+      margin:0 0 14px;
+      font-size:1.4rem;
     }
-    .grupo, .profesor, .fecha, .nuevo-alumno {
-      margin-bottom: 20px;
-      text-align: center;
+
+    .container{
+      max-width:640px;
+      margin:0 auto;
+      background:var(--card);
+      padding:18px;
+      border-radius:12px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.08);
     }
-    #grupo-titulo {
-      text-align: center;
-      color: #145c2c;
-      font-size: 18px;
-      margin-bottom: 10px;
+
+    .row{
+      margin-bottom:16px;
+      text-align:center;
     }
-    .alumno {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      padding: 5px;
-      border-bottom: 1px solid #ccc;
+
+    label{
+      display:block;
+      color:var(--accent);
+      font-weight:600;
+      margin-bottom:8px;
     }
-    .check {
-      transform: scale(1.2);
-      margin-right: 10px;
-      cursor: pointer;
+
+    /* Inputs y selects */
+    .controls{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:wrap;
     }
-    label {
-      cursor: pointer;
-      font-weight: bold;
-      color: #145c2c;
-      flex-grow: 1;
+
+    input[type="text"],
+    input[type="date"],
+    select{
+      padding:10px;
+      border:1px solid #cfcfcf;
+      border-radius:8px;
+      font-size:1rem;
+      width:320px;
+      max-width:100%;
+      background: #fff;
     }
-    input[type="text"], input[type="date"], select {
-      padding: 5px;
-      width: 60%;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+
+    /* Expand calendar picker indicator to full input area (WebKit browsers) */
+    .date-wrap{
+      position:relative;
+      display:inline-block;
+      width:100%;
+      max-width:320px;
     }
-    input.date-alert {
-      border-color: red;
-      background-color: #ffe6e6;
+    input[type="date"]{
+      width:100%;
+      appearance:textfield;
     }
-    button {
-      padding: 6px 12px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
+    input[type="date"]::-webkit-calendar-picker-indicator{
+      position:absolute;
+      right:0;
+      top:0;
+      bottom:0;
+      left:0;
+      width:100%;
+      height:100%;
+      cursor:pointer;
+      color:transparent;
+      background:transparent;
+      opacity:0;
     }
-    button:hover {
-      background-color: #218838;
-    }    
+
+    .date-alert{ border-color: red; background: var(--danger); }
+
+    /* Lista de alumnos */
+    #lista-asistencia{ margin-top:6px; }
+    .alumno{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      justify-content:space-between;
+      padding:8px 6px;
+      border-bottom:1px solid #eee;
+      flex-wrap:wrap;
+    }
+    .alumno-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:1 1 auto;
+      min-width:0;
+    }
+    .check{ transform:scale(1.2); cursor:pointer; flex:0 0 auto; }
+    .alumno label{ font-weight:600; color:var(--accent); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+    /* Botones */
+    .actions{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    button{
+      padding:10px 14px;
+      border-radius:8px;
+      border:0;
+      background:var(--btn);
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      min-width:140px;
+    }
+    button.secondary{ background:#007bff; }
+    button:hover{ background:var(--btn-hover); }
+
+    /* Responsive */
+    @media (max-width:600px){
+      .container{ padding:14px; border-radius:10px; }
+      h1{ font-size:1.2rem; }
+      .controls{ flex-direction:column; align-items:stretch; }
+      input[type="text"], input[type="date"], select{ width:100%; }
+      .alumno{ flex-direction:row; gap:8px; align-items:center; }
+      .alumno label{ font-size:0.95rem; }
+      button{ width:100%; min-width:unset; }
+      .actions{ gap:8px; }
+    }
   </style>
 </head>
 <body>
   <h1>Asistencia TDM Ferro</h1>
+
   <div class="container">
-  <div class="fecha">
-      <label for="fecha">📅 Seleccionar fecha:</label><br>
-      <input type="date" id="fecha">
-    </div>
-  <div class="profesor">
-      <label for="profesor">👨‍🏫 Seleccionar profe:</label><br>
-      <select id="profesor">
-        <option value="">-- Elegir --</option>
-        <option>Agustín</option>
-        <option>Eros</option>
-        <option>Francisco</option>
-        <option>Irina</option>
-        <option>Lucio</option>
-        <option>Reinaldo</option>
-      </select>
-    </div>
-    <div class="grupo">
-      <label for="grupo">📘 Seleccionar grupo:</label><br>
-      <select id="grupo" onchange="cargarAlumnos()">
-        <option value="">-- Elegir --</option>
-        <option value="A">Grilla A</option>
-        <option value="B">Grilla B</option>
-        <option value="C">Grilla C</option>
-        <option value="Escuelita">Grilla Escuelita</option>
-      </select>
+    <div class="row fecha">
+      <label for="fecha">📅 Seleccionar fecha</label>
+      <div class="controls">
+        <div class="date-wrap">
+          <input type="date" id="fecha" aria-label="fecha">
+        </div>
+      </div>
     </div>
 
-    <h2 id="grupo-titulo"></h2>
-    <div id="lista-asistencia"></div>
+    <div class="row profesor">
+      <label for="profesor">👨‍🏫 Seleccionar profe</label>
+      <div class="controls">
+        <select id="profesor" aria-label="profesor">
+          <option value="">-- Elegir --</option>
+          <option>Agustín</option>
+          <option>Eros</option>
+          <option>Francisco</option>
+          <option>Irina</option>
+          <option>Lucio</option>
+          <option>Reinaldo</option>
+        </select>
+      </div>
+    </div>
 
-    <div class="nuevo-alumno">
-      <input type="text" id="nuevoNombre" placeholder="Nombre del nuevo alumno">
-      <button onclick="agregarAlumno()">➕ Agregar</button>
-      <button onclick="generarPDF()">📄 Generar PDF</button>
-	<!-- <button onclick="enviarAGoogleSheets()">🗂️ Guardar en Sheets</button> -->	  
+    <div class="row grupo">
+      <label for="grupo">📘 Seleccionar grupo</label>
+      <div class="controls">
+        <select id="grupo" onchange="cargarAlumnos()" aria-label="grupo">
+          <option value="">-- Elegir --</option>
+          <option value="A">Grilla A</option>
+          <option value="B">Grilla B</option>
+          <option value="C">Grilla C</option>
+          <option value="Escuelita">Grilla Escuelita</option>
+        </select>
+      </div>
+    </div>
+
+    <h2 id="grupo-titulo" style="text-align:center;color:var(--accent);margin:6px 0 8px;font-size:1rem;"></h2>
+
+    <div id="lista-asistencia" aria-live="polite"></div>
+
+    <div style="margin-top:14px;">
+      <div class="controls">
+        <input type="text" id="nuevoNombre" placeholder="Nombre del nuevo alumno" aria-label="nuevo alumno">
+      </div>
+
+      <div class="actions" role="group" aria-label="acciones">
+        <button type="button" onclick="agregarAlumno()">➕ Agregar</button>
+        <button type="button" onclick="generarPDF()">📄 Generar PDF</button>
+        <button type="button" class="secondary" onclick="limpiar()">🧹 Limpiar</button>
+      </div>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     const grupos = {
-      A: [
-        "ANTMAN FACUNDO", "ARNAUDO, FACUNDO EZEQUIEL", "BANEGAS, FRANCISCO IRENEO", "CABRERA SABATE, TOMAS",
-        "DIGESTANI LAUTARO", "FERNANDEZ PIZZELLA, VALENTIN", "JAIMOVICH, IGNACIO", "JOSZPE, SANTIAGO",
-        "TOMASELLO, LUCIO ROMAN", "LIRA FRANCO, REINALDO JOSE", "MARINI, JOAQUIN MATIAS", "MARINI, SANTIAGO FRANCO",
-        "MARTINO FRANCO", "MUJICA, NATALI", "RACK, VICENTINO", "SPINELLI, FRANCO JAVIER", "TURCHIN, EROS"
-      ],
-      B: [
-        "Mariano Grynszpa", "José Luis Paoloni", "Julián Zabaljauregui", "Agus Ávila",
-        "Vitaly Banzaraktsaev", "Dmitri Zimin", "Andrés Lomovasky", "Andrés Molteno"
-      ],
-      C: [
-        "Martin Ibarra", "Azul Contrucchi", "Hernan Ruiz", "Nancy Rabazano", "Kenji Arakaki",
-        "Sebastian Andre", "Agustin Gil Sarmiento", "Martin Kondratiuk", "Juan Bianchi",
-        "Arturo Romero", "Sara Jin", "Federico Rufino", "Virginia Gomez", "Sergio Ontiveros"
-      ],
-      Escuelita: [
-        "YU, LUCAS", "LIN, ANTONIO", "MADIAS, BENJAMIN", "MASTROMARINO, GIANLUCA",
-        "TOPTZIAN, TOMAS VALENTIN", "BRAMAJO, DANTE AGUSTIN", "ROJAS ZALBA, LUCAS",
-        "ROJAS ZALBA, DANIEL", "GARRALDA, FEDERICO IVAN", "LOPEZ RAYA, SANTIAGO",
-        "ROSTCOVSKY, LUCA DAVID", "DELLARROQUELLE, BELEN", "DELLARROQUELLE, VICTORIA",
-        "CABRAL FERNANDEZ, BRUNO SANTIAGO"
-      ]
+      A: ["ANTMAN FACUNDO","ARNAUDO, FACUNDO EZEQUIEL","BANEGAS, FRANCISCO IRENEO","CABRERA SABATE, TOMAS","DIGESTANI LAUTARO","FERNANDEZ PIZZELLA, VALENTIN","JAIMOVICH, IGNACIO","JOSZPE, SANTIAGO","TOMASELLO, LUCIO ROMAN","LIRA FRANCO, REINALDO JOSE","MARINI, JOAQUIN MATIAS","MARINI, SANTIAGO FRANCO","MARTINO FRANCO","MUJICA, NATALI","RACK, VICENTINO","SPINELLI, FRANCO JAVIER","TURCHIN, EROS"],
+      B: ["Mariano Grynszpa","José Luis Paoloni","Julián Zabaljauregui","Agus Ávila","Vitaly Banzaraktsaev","Dmitri Zimin","Andrés Lomovasky","Andrés Molteno"],
+      C: ["Martin Ibarra","Azul Contrucchi","Hernan Ruiz","Nancy Rabazano","Kenji Arakaki","Sebastian Andre","Agustin Gil Sarmiento","Martin Kondratiuk","Juan Bianchi","Arturo Romero","Sara Jin","Federico Rufino","Virginia Gomez","Sergio Ontiveros"],
+      Escuelita: ["YU, LUCAS","LIN, ANTONIO","MADIAS, BENJAMIN","MASTROMARINO, GIANLUCA","TOPTZIAN, TOMAS VALENTIN","BRAMAJO, DANTE AGUSTIN","ROJAS ZALBA, LUCAS","ROJAS ZALBA, DANIEL","GARRALDA, FEDERICO IVAN","LOPEZ RAYA, SANTIAGO","ROSTCOVSKY, LUCA DAVID","DELLARROQUELLE, BELEN","DELLARROQUELLE, VICTORIA","CABRAL FERNANDEZ, BRUNO SANTIAGO"]
     };
 
-    function cargarAlumnos() {
-      const grupo = document.getElementById("grupo").value;
+    function crearId(nombre){
+      return nombre.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+    }
+
+    function cargarAlumnos(){
+      const grupoSel = document.getElementById("grupo").value;
       const lista = document.getElementById("lista-asistencia");
       const titulo = document.getElementById("grupo-titulo");
       lista.innerHTML = "";
-      titulo.textContent = grupo ? `Alumnos de Grilla ${grupo}` : "";
+      titulo.textContent = grupoSel ? `Alumnos de Grilla ${grupoSel}` : "";
 
-      if (!grupo || !grupos[grupo]) return;
+      if (!grupoSel || !grupos[grupoSel]) return;
 
-      const alumnos = [...grupos[grupo]].sort((a, b) => a.localeCompare(b));
+      const alumnos = [...grupos[grupoSel]].sort((a,b)=> a.localeCompare(b,'es',{sensitivity:'base'}));
 
-      alumnos.forEach(nombre => {
-        const id = nombre.toLowerCase().replace(/\s+/g, "-");
+      alumnos.forEach(nombre=>{
+        const id = crearId(nombre);
         const div = document.createElement("div");
         div.className = "alumno";
+
+        const left = document.createElement("div");
+        left.className = "alumno-left";
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
@@ -165,22 +256,33 @@
         const label = document.createElement("label");
         label.setAttribute("for", id);
         label.textContent = nombre;
+        label.title = nombre;
 
-        div.appendChild(checkbox);
-        div.appendChild(label);
+        left.appendChild(checkbox);
+        left.appendChild(label);
+
+        div.appendChild(left);
         lista.appendChild(div);
       });
     }
 
-    function agregarAlumno() {
+    function agregarAlumno(){
       const nombre = document.getElementById("nuevoNombre").value.trim();
-      if (nombre === "") return;
+      if (!nombre) return;
+      const lista = document.getElementById("lista-asistencia");
+      const id = crearId(nombre);
 
-      const id = nombre.toLowerCase().replace(/\s+/g, "-");
-      const contenedor = document.getElementById("lista-asistencia");
+      // Evitar duplicados por id
+      if (document.getElementById(id)) {
+        alert("El alumno ya existe en la lista.");
+        return;
+      }
 
       const div = document.createElement("div");
       div.className = "alumno";
+
+      const left = document.createElement("div");
+      left.className = "alumno-left";
 
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
@@ -190,95 +292,99 @@
       const label = document.createElement("label");
       label.setAttribute("for", id);
       label.textContent = nombre;
+      label.title = nombre;
 
-      div.appendChild(checkbox);
-      div.appendChild(label);
-      contenedor.appendChild(div);
+      left.appendChild(checkbox);
+      left.appendChild(label);
+      div.appendChild(left);
+      lista.appendChild(div);
 
       document.getElementById("nuevoNombre").value = "";
+      document.getElementById("nuevoNombre").focus();
     }
 
-    async function generarPDF() {
-	  const { jsPDF } = window.jspdf;
-	  const fechaInput = document.getElementById("fecha");
-	  const fecha = fechaInput.value;
-	  const profesor = document.getElementById("profesor").value;
-	  const grupo = document.getElementById("grupo").value;
+    async function generarPDF(){
+      const { jsPDF } = window.jspdf;
+      const fechaInput = document.getElementById("fecha");
+      const fecha = fechaInput.value;
+      const profesor = document.getElementById("profesor").value || "(sin seleccionar)";
+      const grupo = document.getElementById("grupo").value || "(sin grupo)";
 
-	  if (!fecha) {
-		fechaInput.classList.add("date-alert");
-		alert("⚠️ Por favor, seleccioná una fecha antes de generar el PDF.");
-		return;
-	  } else {
-		fechaInput.classList.remove("date-alert");
-	  }
+      if (!fecha){
+        fechaInput.classList.add("date-alert");
+        alert("Por favor, seleccioná una fecha antes de generar el PDF.");
+        fechaInput.focus();
+        return;
+      } else {
+        fechaInput.classList.remove("date-alert");
+      }
 
-	  const doc = new jsPDF();
-	  const alumnos = document.querySelectorAll("#lista-asistencia .alumno");
-	  const presentes = [];
+      const doc = new jsPDF({unit:'pt', format:'a4'});
+      const margin = 40;
+      let y = 40;
+      doc.setFontSize(16);
+      doc.text("Asistencia TDM Ferro", margin, y);
+      y += 22;
+      doc.setFontSize(11);
+      doc.text(`Grupo: ${grupo}`, margin, y); y += 16;
+      doc.text(`Fecha: ${fecha}`, margin, y); y += 16;
+      doc.text(`Profesor/a: ${profesor}`, margin, y); y += 22;
 
-	  alumnos.forEach(alumno => {
-		const nombre = alumno.querySelector("label").textContent;
-		const check = alumno.querySelector("input").checked;
-		if (check) presentes.push(nombre);
-	  });
+      doc.setFontSize(12);
+      doc.text("Presentes:", margin, y); y += 16;
 
-	  // Encabezado
-	  doc.setFontSize(14);
-	  doc.text("Asistencia TDM Ferro", 20, 20);
-	  doc.setFontSize(12);
-	  doc.text(`Grupo: ${grupo || "(sin grupo)"}`, 20, 30);
-	  doc.text(`Fecha: ${fecha}`, 20, 38);
-	  if (profesor) doc.text(`Profesor/a: ${profesor}`, 20, 46);
+      const alumnos = Array.from(document.querySelectorAll("#lista-asistencia .alumno"));
+      const presentes = [];
+      alumnos.forEach(al=>{
+        const label = al.querySelector("label");
+        const check = al.querySelector("input[type='checkbox']");
+        if (check && check.checked) presentes.push(label.textContent);
+      });
 
-	  // Lista de presentes
-	  doc.text("Presentes:", 20, 56);
-	  if (presentes.length === 0) {
-		doc.text("— Ningún alumno marcado como presente —", 25, 66);
-	  } else {
-		presentes.forEach((nombre, i) => {
-		  doc.text(`- ${nombre}`, 25, 66 + i * 8);
-		});
-	  }
+      if (presentes.length === 0){
+        doc.text("— Ningún alumno marcado como presente —", margin + 10, y);
+      } else {
+        const lineHeight = 14;
+        presentes.forEach((n,i)=>{
+          const lines = doc.splitTextToSize(`- ${n}`, 520);
+          doc.text(lines, margin + 10, y);
+          y += lines.length * lineHeight;
+          if (y > 760) { doc.addPage(); y = 40; }
+        });
+      }
 
-	  // Guardar PDF
-	  const nombreArchivo = `Asistencia_${grupo || "SinGrupo"}_${fecha}.pdf`;
-	  doc.save(nombreArchivo);
-	}
-	
-	function enviarAGoogleSheets() {
-	  const fecha = document.getElementById("fecha").value;
-	  const profesor = document.getElementById("profesor").value;
-	  const grupo = document.getElementById("grupo").value;
-	  const alumnos = document.querySelectorAll("#lista-asistencia .alumno");
-	  const presentes = [];
+      const nombreArchivo = `Asistencia_${grupo.replace(/\s+/g,'_')}_${fecha}.pdf`;
+      doc.save(nombreArchivo);
+    }
 
-	  alumnos.forEach(alumno => {
-		const nombre = alumno.querySelector("label").textContent;
-		const check = alumno.querySelector("input").checked;
-		if (check) presentes.push(nombre);
-	  });
+    function limpiar(){
+      document.getElementById("fecha").value = "";
+      document.getElementById("profesor").value = "";
+      document.getElementById("grupo").value = "";
+      document.getElementById("lista-asistencia").innerHTML = "";
+      document.getElementById("nuevoNombre").value = "";
+      document.getElementById("grupo-titulo").textContent = "";
+    }
 
-	  const datos = {
-		fecha,
-		profesor,
-		grupo,
-		presentes
-	  };
+    // Mejora UX: abrir picker al tocar cualquier parte del contenedor en móviles (complementario)
+    document.addEventListener('click', (e)=>{
+      const dateWrap = document.querySelector('.date-wrap');
+      if (!dateWrap) return;
+      if (dateWrap.contains(e.target)){
+        const input = document.getElementById('fecha');
+        // For touch devices, focusing helps open the native picker
+        input.focus();
+        // Some Android browsers require a click event on the input to open picker
+        try { input.click(); } catch(e){}
+      }
+    });
 
-	  fetch("https://asistencia-ferro.glitch.me/asistencia", {
-		method: "POST",
-		body: JSON.stringify(datos),
-		headers: {
-		  "Content-Type": "application/json"
-		}
-	  })
-	  .then(res => res.text())
-	  .then(respuesta => {
-		alert("✅ Asistencia guardada en Google Sheets");
-	  })
-	  .catch(error => {
-		alert("❌ Error al enviar: " + error);
-	  });
-	}
-</script>
+    // Accessibility: enable label click to toggle checkbox even if label shrinks
+    document.addEventListener('change', (e)=>{
+      if (e.target && e.target.matches('#grupo')){
+        cargarAlumnos();
+      }
+    });
+  </script>
+</body>
+</html>
