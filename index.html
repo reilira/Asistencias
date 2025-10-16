@@ -162,6 +162,10 @@
   --danger:#3b1a1a;
   --text:#e6f7f3;
 }
+    .centrado {
+    text-align: center;
+  }
+
 
 
     /* Responsive */
@@ -192,7 +196,7 @@
       <label for="fecha">📅 Seleccionar fecha</label>
       <div class="controls">
         <div class="date-wrap">
-          <input type="date" id="fecha" aria-label="fecha">
+          <input type="date" id="fecha" aria-label="fecha" class="centrado">
         </div>
       </div>
     </div>
@@ -200,7 +204,7 @@
     <div class="row profesor">
       <label for="profesor">👨‍🏫 Seleccionar profe</label>
       <div class="controls">
-        <select id="profesor" aria-label="profesor">
+        <select id="profesor" aria-label="profesor" class="centrado">
           <option value="">-- Elegir --</option>
           <option>Agustín</option>
           <option>Eros</option>
@@ -215,7 +219,7 @@
     <div class="row grupo">
       <label for="grupo">📘 Seleccionar grupo</label>
       <div class="controls">
-        <select id="grupo" onchange="cargarAlumnos()" aria-label="grupo">
+        <select id="grupo" onchange="cargarAlumnos()" aria-label="grupo" class="centrado">
           <option value="">-- Elegir --</option>
           <option value="A">Grilla A</option>
           <option value="B">Grilla B</option>
@@ -235,7 +239,7 @@
       </div>
 
       <div class="actions" role="group" aria-label="acciones">
-        <button type="button" onclick="agregarAlumno()">➕ Agregar</button>
+        <button type="button" onclick="agregarAlumno()">➕ Agregar alumno</button>
        <!-- <button type="button" onclick="generarPDF()">📄 Generar PDF</button>-->
         <button type="button" onclick="copiarAlPortapapeles()">📋 Copiar al portapapeles </button>
         <button type="button" class="secondary" onclick="limpiar()">🧹 Limpiar</button>
