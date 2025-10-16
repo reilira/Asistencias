@@ -71,6 +71,28 @@
     button:hover {
       background-color: #218838;
     }
+	  
+    input[type="date"] {
+      cursor: pointer;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 200px;
+    }
+
+    /* Opcional: eliminar el ícono del calendario si querés un diseño más limpio */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      background: transparent;
+      color: transparent;
+      cursor: pointer;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
   </style>
 </head>
 <body>
@@ -81,15 +103,15 @@
       <input type="date" id="fecha">
     </div>
   <div class="profesor">
-      <label for="profesor">👨‍🏫 Seleccionar profesor:</label><br>
+      <label for="profesor">👨‍🏫 Seleccionar profe:</label><br>
       <select id="profesor">
         <option value="">-- Elegir --</option>
-        <option>Agustín M</option>
-        <option>Eros T</option>
-        <option>Francisco B</option>
-        <option>Irina H</option>
-        <option>Lucio T</option>
-        <option>Reinaldo L</option>
+        <option>Agustín</option>
+        <option>Eros</option>
+        <option>Francisco</option>
+        <option>Irina</option>
+        <option>Lucio</option>
+        <option>Reinaldo</option>
       </select>
     </div>
     <div class="grupo">
