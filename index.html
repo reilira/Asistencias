@@ -142,6 +142,28 @@
     button.secondary{ background:#007bff; }
     button:hover{ background:var(--btn-hover); }
 
+    :root{
+  --bg:#d4f4d2;
+  --accent:#145c2c;
+  --card:#fff;
+  --btn:#28a745;
+  --btn-hover:#218838;
+  --danger:#ffe6e6;
+  --text:#0b2b18;
+}
+
+/* modo oscuro */
+.dark{
+  --bg:#0f1720;
+  --accent:#7dd3c8;
+  --card:#0b1320;
+  --btn:#0ea5a4;
+  --btn-hover:#0b8b88;
+  --danger:#3b1a1a;
+  --text:#e6f7f3;
+}
+
+
     /* Responsive */
     @media (max-width:600px){
       .container{ padding:14px; border-radius:10px; }
@@ -157,6 +179,10 @@
 </head>
 <body>
   <h1>Asistencia TDM Ferro</h1>
+  <button id="toggleDark" aria-pressed="false" style="position:absolute; top:12px; right:12px; padding:6px 10px; border-radius:8px;">
+  🌙
+</button>
+
 
   <div class="container">
     <div class="row fecha">
@@ -382,6 +408,34 @@
         cargarAlumnos();
       }
     });
+
+    const toggle = document.getElementById('toggleDark');
+const root = document.documentElement; // <html>
+
+function applyDark(isDark){
+  if (isDark) {
+    root.classList.add('dark');
+    toggle.setAttribute('aria-pressed','true');
+    toggle.textContent = '☀️';
+  } else {
+    root.classList.remove('dark');
+    toggle.setAttribute('aria-pressed','false');
+    toggle.textContent = '🌙';
+  }
+  localStorage.setItem('tdm-dark', isDark ? '1' : '0');
+}
+
+// inicializar según preferencia guardada o preferencia del sistema
+const saved = localStorage.getItem('tdm-dark');
+if (saved !== null) {
+  applyDark(saved === '1');
+} else {
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyDark(prefersDark);
+}
+
+toggle.addEventListener('click', ()=> applyDark(!root.classList.contains('dark')));
+
   </script>
 </body>
 </html>
