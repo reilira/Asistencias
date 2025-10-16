@@ -234,6 +234,7 @@
       <div class="actions" role="group" aria-label="acciones">
         <button type="button" onclick="agregarAlumno()">➕ Agregar</button>
         <button type="button" onclick="generarPDF()">📄 Generar PDF</button>
+        <button type="button" onclick="copiarAlPortapapeles()">📋 Copiar</button>
         <button type="button" class="secondary" onclick="limpiar()">🧹 Limpiar</button>
       </div>
     </div>
@@ -408,6 +409,71 @@
         cargarAlumnos();
       }
     });
+
+    function construirRegistro() {
+  const fecha = document.getElementById('fecha').value || '(sin fecha)';
+  const profesor = document.getElementById('profesor').value || '(sin profesor)';
+  const grupo = document.getElementById('grupo').value || '(sin grupo)';
+  const alumnos = Array.from(document.querySelectorAll('#lista-asistencia .alumno'))
+    .map(a => {
+      const nombre = a.querySelector('label').textContent;
+      const presente = !!a.querySelector('input[type="checkbox"]').checked;
+      return { nombre, presente };
+    });
+  return { fecha, profesor, grupo, alumnos, creado: new Date().toISOString() };
+}
+
+function formatearTextoParaCopiar(registro) {
+  const { fecha, profesor, grupo, alumnos } = registro;
+  const presentes = alumnos.filter(a => a.presente).map(a => a.nombre);
+  const lineas = [];
+  lineas.push('Asistencia TDM Ferro');
+  lineas.push(`Grupo: ${grupo}`);
+  lineas.push(`Fecha: ${fecha}`);
+  lineas.push(`Profesor/a: ${profesor}`);
+  lineas.push('');
+  lineas.push('Presentes:');
+  if (presentes.length === 0) {
+    lineas.push('— Ningún alumno marcado como presente —');
+  } else {
+    presentes.forEach((n, i) => lineas.push(`${i+1}. ${n}`));
+  }
+  lineas.push('');
+  lineas.push(`Exportado: ${new Date().toLocaleString()}`);
+  return lineas.join('\n');
+}
+
+function copiarAlPortapapeles() {
+  const registro = construirRegistro();
+  const texto = formatearTextoParaCopiar(registro);
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(texto)
+      .then(() => alert('✅ Contenido copiado al portapapeles'))
+      .catch(err => {
+        console.error(err);
+        fallbackCopy(texto);
+      });
+  } else {
+    fallbackCopy(texto);
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    const ok = document.execCommand('copy');
+    alert(ok ? '✅ Contenido copiado al portapapeles' : '❌ No se pudo copiar automáticamente, seleccioná y copiá manualmente');
+  } catch (e) {
+    alert('❌ No se pudo copiar automáticamente, seleccioná y copiá manualmente');
+  }
+  ta.remove();
+}
 
     const toggle = document.getElementById('toggleDark');
 const root = document.documentElement; // <html>
