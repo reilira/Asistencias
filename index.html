@@ -300,14 +300,14 @@
 
         <div id="lista-asistencia" aria-live="polite"></div>
 
-        <div class="col-sm-7">
+        <div>
             <div class="controls">
                 <input type="text" id="nuevoNombre" placeholder="Nombre del alumno nuevo" aria-label="nuevo alumno"
                     class="centrado">
             </div>
         </div>
-        <div class="col-sm-3">
-            <button type="button" onclick="agregarAlumno()">➕ Agregar alumno</button>
+        <div>
+            <button type="button" onclick="agregarAlumno()" class="centrado">➕ Agregar alumno</button>
         </div>
 
         <div style="margin-top:14px;">
@@ -316,7 +316,7 @@
                 <!--<button type="button" onclick="copiarAlPortapapeles()">📋 Copiar al portapapeles </button>-->
                 <button onclick="compartirPorWhatsApp()"
                     style="background-color:#25D366;color:white;padding:10px 16px;border:none;border-radius:6px;font-size:14px;cursor:pointer;">
-                    📤 Compartir por WhatsApp </button>
+                    📤 Enviar por WhatsApp </button>
                 <button type="button" class="secondary" onclick="limpiar()">🧹 Limpiar</button>
             </div>
         </div>
@@ -335,7 +335,7 @@
             A: ["ANTMAN FACUNDO", "ARNAUDO FACUNDO", "BANEGAS FRANCISCO", "CABRERA TOMAS", "DIGESTANI LAUTARO", "FERNANDEZ VALENTIN", "JAIMOVICH IGNACIO", "JOSZPE SANTIAGO", "TOMASELLO LUCIO", "LIRA REINALDO", "MARINI JOAQUIN", "MARINI SANTIAGO", "MARTINO FRANCO", "MUJICA NATALI", "RACK VICENTINO", "SPINELLI FRANCO", "TURCHIN EROS"],
             B: ["Mariano Grynszpan", "José Luis Paoloni", "Julián Zabaljauregui", "Agustin Ávila", "Vitaly Banzaraktsaev", "Dmitri Zimin", "Andrés Lomovasky", "Andrés Molteno", "Kenji Arakaki", "Federico Messina", "Martín Ibarra", "Genghis Capella", "Geronimo Alejandro", "Horacio Golstein", "Virginia Gómez", "Luca Rostcovsky", "Bautista Carballa", "Armando Centofanti"],
             C: ["Martin Ibarra", "Azul Contrucchi", "Hernan Ruiz", "Nancy Rabazano", "Kenji Arakaki", "Sebastian Andre", "Agustin Gil Sarmiento", "Martin Kondratiuk", "Juan Bianchi", "Arturo Romero", "Sara Jin", "Federico Rufino", "Virginia Gomez", "Sergio Ontiveros", "Santiago Gervasini"],
-            Escuelita: ["YU, LUCAS", "LIN, ANTONIO", "MADIAS, BENJAMIN", "MASTROMARINO, GIANLUCA", "TOPTZIAN, TOMAS VALENTIN", "BRAMAJO, DANTE AGUSTIN", "ROJAS ZALBA, LUCAS", "ROJAS ZALBA, DANIEL", "GARRALDA, FEDERICO IVAN", "LOPEZ RAYA, SANTIAGO", "ROSTCOVSKY, LUCA DAVID", "DELLARROQUELLE, BELEN", "DELLARROQUELLE, VICTORIA", "CABRAL FERNANDEZ, BRUNO SANTIAGO"]
+            Escuelita: ["YU LUCAS", "LIN ANTONIO", "MADIAS BENJAMIN", "MASTROMARINO GIANLUCA", "TOPTZIAN TOMAS", "BRAMAJO DANTE ", "ROJAS ZALBA LUCAS", "ROJAS ZALBA DANIEL", "GARRALDA FEDERICO", "LOPEZ RAYA SANTIAGO", "ROSTCOVSKY LUCA", "DELLARROQUELLE BELEN", "DELLARROQUELLE VICTORIA", "CABRAL BRUNO"]
         };
 
         function crearId(nombre) {
@@ -593,4 +593,5 @@
 
     </script>
 </body>
+
 </html>
