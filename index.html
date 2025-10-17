@@ -517,6 +517,14 @@
             const { fecha, profesor, grupo, alumnos } = registro;
             const presentes = alumnos.filter(a => a.presente).map(a => a.nombre);
             const lineas = [];
+
+            // ✅ Formatear fecha de yyyy-mm-dd a dd-mm-aa
+            let fechaFormateada = fecha;
+            if (fecha && /^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
+                const [yyyy, mm, dd] = fecha.split('-');
+                fechaFormateada = `${dd}-${mm}-${yyyy.slice(-2)}`;
+            }
+            
             lineas.push('Asistencia TDM Ferro');
             lineas.push(`Grupo: ${grupo}`);
             lineas.push(`Fecha: ${fecha}`);
