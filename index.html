@@ -1,522 +1,596 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="utf-8">
-  <title>Asistencia TDM Ferro</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    :root{
-      --bg:#d4f4d2;
-      --accent:#145c2c;
-      --card:#fff;
-      --btn:#28a745;
-      --btn-hover:#218838;
-      --danger:#ffe6e6;
-    }
+    <meta charset="utf-8">
+    <title>Asistencia TDM Ferro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --bg: #d4f4d2;
+            --accent: #145c2c;
+            --card: #fff;
+            --btn: #28a745;
+            --btn-hover: #218838;
+            --danger: #ffe6e6;
+        }
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      background:var(--bg);
-      padding:20px;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
+        * {
+            box-sizing: border-box
+        }
 
-    h1{
-      text-align:center;
-      color:var(--accent);
-      margin:0 0 14px;
-      font-size:1.4rem;
-    }
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+            background: var(--bg);
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-    .container{
-      max-width:640px;
-      margin:0 auto;
-      background:var(--card);
-      padding:18px;
-      border-radius:12px;
-      box-shadow:0 6px 18px rgba(0,0,0,0.08);
-    }
+        h1 {
+            text-align: center;
+            color: var(--accent);
+            margin: 0 0 14px;
+            font-size: 1.4rem;
+        }
 
-    .row{
-      margin-bottom:16px;
-      text-align:center;
-    }
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            background: var(--card);
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        }
 
-    label{
-      display:block;
-      color:var(--accent);
-      font-weight:600;
-      margin-bottom:8px;
-    }
+        .row {
+            margin-bottom: 16px;
+            text-align: center;
+        }
 
-    /* Inputs y selects */
-    .controls{
-      display:flex;
-      gap:12px;
-      justify-content:center;
-      align-items:center;
-      flex-wrap:wrap;
-    }
+        label {
+            display: block;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
 
-    input[type="text"],
-    input[type="date"],
-    select{
-      padding:10px;
-      border:1px solid #cfcfcf;
-      border-radius:8px;
-      font-size:1rem;
-      width:320px;
-      max-width:100%;
-      background: #fff;
-    }
+        /* Inputs y selects */
+        .controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-    /* Expand calendar picker indicator to full input area (WebKit browsers) */
-    .date-wrap{
-      position:relative;
-      display:inline-block;
-      width:100%;
-      max-width:320px;
-    }
-    input[type="date"]{
-      width:100%;
-      appearance:textfield;
-    }
-    input[type="date"]::-webkit-calendar-picker-indicator{
-      position:absolute;
-      right:0;
-      top:0;
-      bottom:0;
-      left:0;
-      width:100%;
-      height:100%;
-      cursor:pointer;
-      color:transparent;
-      background:transparent;
-      opacity:0;
-    }
+        input[type="text"],
+        input[type="date"],
+        select {
+            padding: 10px;
+            border: 1px solid #cfcfcf;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 320px;
+            max-width: 100%;
+            background: #fff;
+        }
 
-    .date-alert{ border-color: red; background: var(--danger); }
+        /* Expand calendar picker indicator to full input area (WebKit browsers) */
+        .date-wrap {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            max-width: 320px;
+        }
 
-    /* Lista de alumnos */
-    #lista-asistencia{ margin-top:6px; }
-    .alumno{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      justify-content:space-between;
-      padding:8px 6px;
-      border-bottom:1px solid #eee;
-      flex-wrap:wrap;
-    }
-    .alumno-left{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex:1 1 auto;
-      min-width:0;
-    }
-    .check{ transform:scale(1.2); cursor:pointer; flex:0 0 auto; }
-    .alumno label{ font-weight:600; color:var(--accent); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        input[type="date"] {
+            width: 100%;
+            appearance: textfield;
+        }
 
-    /* Botones */
-    .actions{
-      display:flex;
-      gap:10px;
-      justify-content:center;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-    button{
-      padding:10px 14px;
-      border-radius:8px;
-      border:0;
-      background:var(--btn);
-      color:#fff;
-      font-weight:700;
-      cursor:pointer;
-      min-width:140px;
-    }
-    button.secondary{ background:#007bff; }
-    button:hover{ background:var(--btn-hover); }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            color: transparent;
+            background: transparent;
+            opacity: 0;
+        }
 
-    :root{
-  --bg:#d4f4d2;
-  --accent:#145c2c;
-  --card:#fff;
-  --btn:#28a745;
-  --btn-hover:#218838;
-  --danger:#ffe6e6;
-  --text:#0b2b18;
-}
+        .date-alert {
+            border-color: red;
+            background: var(--danger);
+        }
 
-/* modo oscuro */
-.dark{
-  --bg:#0f1720;
-  --accent:#7dd3c8;
-  --card:#0b1320;
-  --btn:#0ea5a4;
-  --btn-hover:#0b8b88;
-  --danger:#3b1a1a;
-  --text:#e6f7f3;
-}
-    .centrado {
-    text-align: center;
-  }
+        /* Lista de alumnos */
+        #lista-asistencia {
+            margin-top: 6px;
+        }
+
+        .alumno {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: space-between;
+            padding: 8px 6px;
+            border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+        }
+
+        .alumno-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .check {
+            transform: scale(1.2);
+            cursor: pointer;
+            flex: 0 0 auto;
+        }
+
+        .alumno label {
+            font-weight: 600;
+            color: var(--accent);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Botones */
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        button {
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 0;
+            background: var(--btn);
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            min-width: 140px;
+        }
+
+        button.secondary {
+            background: #007bff;
+        }
+
+        button:hover {
+            background: var(--btn-hover);
+        }
+
+        :root {
+            --bg: #d4f4d2;
+            --accent: #145c2c;
+            --card: #fff;
+            --btn: #28a745;
+            --btn-hover: #218838;
+            --danger: #ffe6e6;
+            --text: #0b2b18;
+        }
+
+        /* modo oscuro */
+        .dark {
+            --bg: #0f1720;
+            --accent: #7dd3c8;
+            --card: #0b1320;
+            --btn: #0ea5a4;
+            --btn-hover: #0b8b88;
+            --danger: #3b1a1a;
+            --text: #e6f7f3;
+        }
+
+        .centrado {
+            text-align: center;
+        }
 
 
 
-    /* Responsive */
-    @media (max-width:600px){
-      .container{ padding:14px; border-radius:10px; }
-      h1{ font-size:1.2rem; }
-      .controls{ flex-direction:column; align-items:stretch; }
-      input[type="text"], input[type="date"], select{ width:100%; }
-      .alumno{ flex-direction:row; gap:8px; align-items:center; }
-      .alumno label{ font-size:0.95rem; }
-      button{ width:100%; min-width:unset; }
-      .actions{ gap:8px; }
-    }
-  </style>
+        /* Responsive */
+        @media (max-width:600px) {
+            .container {
+                padding: 14px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            input[type="text"],
+            input[type="date"],
+            select {
+                width: 100%;
+            }
+
+            .alumno {
+                flex-direction: row;
+                gap: 8px;
+                align-items: center;
+            }
+
+            .alumno label {
+                font-size: 0.95rem;
+            }
+
+            button {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .actions {
+                gap: 8px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div>
-    </br></br>
-  </div>
-  <h1>Asistencia Ferro TDM</h1>
-  <button id="toggleDark" aria-pressed="false" style="position:absolute; top:12px; right:12px; padding:6px 10px; border-radius:8px;">
-  🌙
-</button>
+    <div>
+        </br></br>
+    </div>
+    <h1>Asistencia Ferro TDM</h1>
+    <button id="toggleDark" aria-pressed="false"
+        style="position:absolute; top:12px; right:12px; padding:6px 10px; border-radius:8px;">
+        🌙
+    </button>
 
 
-  <div class="container">
-    <div class="row fecha">
-      <label for="fecha">📅 Seleccionar fecha</label>
-      <div class="controls">
-        <div class="date-wrap">
-          <input type="date" id="fecha" aria-label="fecha" class="centrado">
+    <div class="container">
+        <div class="row fecha">
+            <label for="fecha">📅 Seleccionar fecha</label>
+            <div class="controls">
+                <div class="date-wrap">
+                    <input type="date" id="fecha" aria-label="fecha" class="centrado">
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="row profesor">
+            <label for="profesor">👨‍🏫 Seleccionar profe</label>
+            <div class="controls">
+                <select id="profesor" aria-label="profesor" class="centrado">
+                    <option value="">-- Elegir --</option>
+                    <option>Agustín</option>
+                    <option>Eros</option>
+                    <option>Francisco</option>
+                    <option>Irina</option>
+                    <option>Lucio</option>
+                    <option>Reinaldo</option>
+                    <option>Pablo</option>
+                    <option>Fabián</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row grupo">
+            <label for="grupo">📘 Grupo de entrenamiento </label>
+            <div class="controls">
+                <select id="grupo" onchange="cargarAlumnos()" aria-label="grupo" class="centrado">
+                    <option value="">-- Elegir --</option>
+                    <option value="A">Grilla A</option>
+                    <option value="B">Grilla B</option>
+                    <option value="C">Grilla C</option>
+                    <option value="Escuelita">Grilla Escuelita</option>
+                </select>
+            </div>
+        </div>
+
+        <h2 id="grupo-titulo" style="text-align:center;color:var(--accent);margin:6px 0 8px;font-size:1rem;"></h2>
+
+        <div id="lista-asistencia" aria-live="polite"></div>
+
+        <div class="col-sm-7">
+            <div class="controls">
+                <input type="text" id="nuevoNombre" placeholder="Nombre del alumno nuevo" aria-label="nuevo alumno"
+                    class="centrado">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <button type="button" onclick="agregarAlumno()">➕ Agregar alumno</button>
+        </div>
+
+        <div style="margin-top:14px;">
+            <div class="actions" role="group" aria-label="acciones">                
+                <!-- <button type="button" onclick="generarPDF()">📄 Generar PDF</button>-->
+                <!--<button type="button" onclick="copiarAlPortapapeles()">📋 Copiar al portapapeles </button>-->
+                <button onclick="compartirPorWhatsApp()"
+                    style="background-color:#25D366;color:white;padding:10px 16px;border:none;border-radius:6px;font-size:14px;cursor:pointer;">
+                    📤 Compartir por WhatsApp </button>
+                <button type="button" class="secondary" onclick="limpiar()">🧹 Limpiar</button>
+            </div>
+        </div>
     </div>
 
-    <div class="row profesor">
-      <label for="profesor">👨‍🏫 Seleccionar profe</label>
-      <div class="controls">
-        <select id="profesor" aria-label="profesor" class="centrado">
-          <option value="">-- Elegir --</option>
-          <option>Agustín</option>
-          <option>Eros</option>
-          <option>Francisco</option>
-          <option>Irina</option>
-          <option>Lucio</option>
-          <option>Reinaldo</option>
-        </select>
-      </div>
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        function compartirPorWhatsApp() {
+            const registro = construirRegistro();
+            const texto = formatearTextoParaCopiar(registro);
+            const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+            window.open(url, '_blank');
+        }
 
-    <div class="row grupo">
-      <label for="grupo">📘 Seleccionar grupo</label>
-      <div class="controls">
-        <select id="grupo" onchange="cargarAlumnos()" aria-label="grupo" class="centrado">
-          <option value="">-- Elegir --</option>
-          <option value="A">Grilla A</option>
-          <option value="B">Grilla B</option>
-          <option value="C">Grilla C</option>
-          <option value="Escuelita">Grilla Escuelita</option>
-        </select>
-      </div>
-    </div>
+        const grupos = {
+            A: ["ANTMAN FACUNDO", "ARNAUDO FACUNDO", "BANEGAS FRANCISCO", "CABRERA TOMAS", "DIGESTANI LAUTARO", "FERNANDEZ VALENTIN", "JAIMOVICH IGNACIO", "JOSZPE SANTIAGO", "TOMASELLO LUCIO", "LIRA REINALDO", "MARINI JOAQUIN", "MARINI SANTIAGO", "MARTINO FRANCO", "MUJICA NATALI", "RACK VICENTINO", "SPINELLI FRANCO", "TURCHIN EROS"],
+            B: ["Mariano Grynszpan", "José Luis Paoloni", "Julián Zabaljauregui", "Agustin Ávila", "Vitaly Banzaraktsaev", "Dmitri Zimin", "Andrés Lomovasky", "Andrés Molteno", "Kenji Arakaki", "Federico Messina", "Martín Ibarra", "Genghis Capella", "Geronimo Alejandro", "Horacio Golstein", "Virginia Gómez", "Luca Rostcovsky", "Bautista Carballa", "Armando Centofanti"],
+            C: ["Martin Ibarra", "Azul Contrucchi", "Hernan Ruiz", "Nancy Rabazano", "Kenji Arakaki", "Sebastian Andre", "Agustin Gil Sarmiento", "Martin Kondratiuk", "Juan Bianchi", "Arturo Romero", "Sara Jin", "Federico Rufino", "Virginia Gomez", "Sergio Ontiveros", "Santiago Gervasini"],
+            Escuelita: ["YU, LUCAS", "LIN, ANTONIO", "MADIAS, BENJAMIN", "MASTROMARINO, GIANLUCA", "TOPTZIAN, TOMAS VALENTIN", "BRAMAJO, DANTE AGUSTIN", "ROJAS ZALBA, LUCAS", "ROJAS ZALBA, DANIEL", "GARRALDA, FEDERICO IVAN", "LOPEZ RAYA, SANTIAGO", "ROSTCOVSKY, LUCA DAVID", "DELLARROQUELLE, BELEN", "DELLARROQUELLE, VICTORIA", "CABRAL FERNANDEZ, BRUNO SANTIAGO"]
+        };
 
-    <h2 id="grupo-titulo" style="text-align:center;color:var(--accent);margin:6px 0 8px;font-size:1rem;"></h2>
+        function crearId(nombre) {
+            return nombre.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
 
-    <div id="lista-asistencia" aria-live="polite"></div>
+        function cargarAlumnos() {
+            const grupoSel = document.getElementById("grupo").value;
+            const lista = document.getElementById("lista-asistencia");
+            const titulo = document.getElementById("grupo-titulo");
+            lista.innerHTML = "";
+            titulo.textContent = grupoSel ? `Alumnos de Grilla ${grupoSel}` : "";
 
-    <div style="margin-top:14px;">
-      <div class="controls">
-        <input type="text" id="nuevoNombre" placeholder="Nombre del alumno nuevo" aria-label="nuevo alumno" class="centrado">
-      </div>
+            if (!grupoSel || !grupos[grupoSel]) return;
 
-      <div class="actions" role="group" aria-label="acciones">
-        <button type="button" onclick="agregarAlumno()">➕ Agregar alumno</button>
-       <!-- <button type="button" onclick="generarPDF()">📄 Generar PDF</button>-->
-        <!--<button type="button" onclick="copiarAlPortapapeles()">📋 Copiar al portapapeles </button>-->
-        <button onclick="compartirPorWhatsApp()" style="background-color:#25D366;color:white;padding:10px 16px;border:none;border-radius:6px;font-size:14px;cursor:pointer;"> 📤 Compartir por WhatsApp </button>
-        <button type="button" class="secondary" onclick="limpiar()">🧹 Limpiar</button>
-      </div>
-    </div>
-  </div>
+            const alumnos = [...grupos[grupoSel]].sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script>
-    function compartirPorWhatsApp() {
-  const registro = construirRegistro();
-  const texto = formatearTextoParaCopiar(registro);
-  const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
-  window.open(url, '_blank');
-}
-    
-    const grupos = {
-      A: ["ANTMAN FACUNDO","ARNAUDO FACUNDO","BANEGAS FRANCISCO","CABRERA TOMAS","DIGESTANI LAUTARO","FERNANDEZ VALENTIN","JAIMOVICH IGNACIO","JOSZPE SANTIAGO","TOMASELLO LUCIO","LIRA REINALDO","MARINI JOAQUIN","MARINI SANTIAGO","MARTINO FRANCO","MUJICA NATALI","RACK VICENTINO","SPINELLI FRANCO","TURCHIN EROS"],
-      B: ["Mariano Grynszpan","José Luis Paoloni","Julián Zabaljauregui","Agustin Ávila","Vitaly Banzaraktsaev","Dmitri Zimin","Andrés Lomovasky","Andrés Molteno","Kenji Arakaki","Federico Messina","Martín Ibarra","Genghis Capella","Geronimo Alejandro","Horacio Golstein","Virginia Gómez","Luca Rostcovsky","Bautista Carballa","Armando Centofanti"],
-      C: ["Martin Ibarra","Azul Contrucchi","Hernan Ruiz","Nancy Rabazano","Kenji Arakaki","Sebastian Andre","Agustin Gil Sarmiento","Martin Kondratiuk","Juan Bianchi","Arturo Romero","Sara Jin","Federico Rufino","Virginia Gomez","Sergio Ontiveros","Santiago Gervasini"],
-      Escuelita: ["YU, LUCAS","LIN, ANTONIO","MADIAS, BENJAMIN","MASTROMARINO, GIANLUCA","TOPTZIAN, TOMAS VALENTIN","BRAMAJO, DANTE AGUSTIN","ROJAS ZALBA, LUCAS","ROJAS ZALBA, DANIEL","GARRALDA, FEDERICO IVAN","LOPEZ RAYA, SANTIAGO","ROSTCOVSKY, LUCA DAVID","DELLARROQUELLE, BELEN","DELLARROQUELLE, VICTORIA","CABRAL FERNANDEZ, BRUNO SANTIAGO"]
-    };
+            alumnos.forEach(nombre => {
+                const id = crearId(nombre);
+                const div = document.createElement("div");
+                div.className = "alumno";
 
-    function crearId(nombre){
-      return nombre.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-    }
+                const left = document.createElement("div");
+                left.className = "alumno-left";
 
-    function cargarAlumnos(){
-      const grupoSel = document.getElementById("grupo").value;
-      const lista = document.getElementById("lista-asistencia");
-      const titulo = document.getElementById("grupo-titulo");
-      lista.innerHTML = "";
-      titulo.textContent = grupoSel ? `Alumnos de Grilla ${grupoSel}` : "";
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.id = id;
+                checkbox.className = "check";
 
-      if (!grupoSel || !grupos[grupoSel]) return;
+                const label = document.createElement("label");
+                label.setAttribute("for", id);
+                label.textContent = nombre;
+                label.title = nombre;
 
-      const alumnos = [...grupos[grupoSel]].sort((a,b)=> a.localeCompare(b,'es',{sensitivity:'base'}));
+                left.appendChild(checkbox);
+                left.appendChild(label);
 
-      alumnos.forEach(nombre=>{
-        const id = crearId(nombre);
-        const div = document.createElement("div");
-        div.className = "alumno";
+                div.appendChild(left);
+                lista.appendChild(div);
+            });
+        }
 
-        const left = document.createElement("div");
-        left.className = "alumno-left";
+        function agregarAlumno() {
+            const nombre = document.getElementById("nuevoNombre").value.trim();
+            if (!nombre) return;
+            const lista = document.getElementById("lista-asistencia");
+            const id = crearId(nombre);
 
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.id = id;
-        checkbox.className = "check";
+            // Evitar duplicados por id
+            if (document.getElementById(id)) {
+                alert("El alumno ya existe en la lista.");
+                return;
+            }
 
-        const label = document.createElement("label");
-        label.setAttribute("for", id);
-        label.textContent = nombre;
-        label.title = nombre;
+            const div = document.createElement("div");
+            div.className = "alumno";
 
-        left.appendChild(checkbox);
-        left.appendChild(label);
+            const left = document.createElement("div");
+            left.className = "alumno-left";
 
-        div.appendChild(left);
-        lista.appendChild(div);
-      });
-    }
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.id = id;
+            checkbox.className = "check";
 
-    function agregarAlumno(){
-      const nombre = document.getElementById("nuevoNombre").value.trim();
-      if (!nombre) return;
-      const lista = document.getElementById("lista-asistencia");
-      const id = crearId(nombre);
+            const label = document.createElement("label");
+            label.setAttribute("for", id);
+            label.textContent = nombre;
+            label.title = nombre;
 
-      // Evitar duplicados por id
-      if (document.getElementById(id)) {
-        alert("El alumno ya existe en la lista.");
-        return;
-      }
+            left.appendChild(checkbox);
+            left.appendChild(label);
+            div.appendChild(left);
+            lista.appendChild(div);
 
-      const div = document.createElement("div");
-      div.className = "alumno";
+            document.getElementById("nuevoNombre").value = "";
+            document.getElementById("nuevoNombre").focus();
+        }
 
-      const left = document.createElement("div");
-      left.className = "alumno-left";
+        async function generarPDF() {
+            const { jsPDF } = window.jspdf;
+            const fechaInput = document.getElementById("fecha");
+            const fecha = fechaInput.value;
+            const profesor = document.getElementById("profesor").value || "(sin seleccionar)";
+            const grupo = document.getElementById("grupo").value || "(sin grupo)";
 
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.id = id;
-      checkbox.className = "check";
+            if (!fecha) {
+                fechaInput.classList.add("date-alert");
+                alert("Por favor, seleccioná una fecha antes de generar el PDF.");
+                fechaInput.focus();
+                return;
+            } else {
+                fechaInput.classList.remove("date-alert");
+            }
 
-      const label = document.createElement("label");
-      label.setAttribute("for", id);
-      label.textContent = nombre;
-      label.title = nombre;
+            const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+            const margin = 40;
+            let y = 40;
+            doc.setFontSize(16);
+            doc.text("Asistencia TDM Ferro", margin, y);
+            y += 22;
+            doc.setFontSize(11);
+            doc.text(`Grupo: ${grupo}`, margin, y); y += 16;
+            doc.text(`Fecha: ${fecha}`, margin, y); y += 16;
+            doc.text(`Profesor/a: ${profesor}`, margin, y); y += 22;
 
-      left.appendChild(checkbox);
-      left.appendChild(label);
-      div.appendChild(left);
-      lista.appendChild(div);
+            doc.setFontSize(12);
+            doc.text("Presentes:", margin, y); y += 16;
 
-      document.getElementById("nuevoNombre").value = "";
-      document.getElementById("nuevoNombre").focus();
-    }
+            const alumnos = Array.from(document.querySelectorAll("#lista-asistencia .alumno"));
+            const presentes = [];
+            alumnos.forEach(al => {
+                const label = al.querySelector("label");
+                const check = al.querySelector("input[type='checkbox']");
+                if (check && check.checked) presentes.push(label.textContent);
+            });
 
-    async function generarPDF(){
-      const { jsPDF } = window.jspdf;
-      const fechaInput = document.getElementById("fecha");
-      const fecha = fechaInput.value;
-      const profesor = document.getElementById("profesor").value || "(sin seleccionar)";
-      const grupo = document.getElementById("grupo").value || "(sin grupo)";
+            if (presentes.length === 0) {
+                doc.text("— Ningún alumno marcado como presente —", margin + 10, y);
+            } else {
+                const lineHeight = 14;
+                presentes.forEach((n, i) => {
+                    const lines = doc.splitTextToSize(`- ${n}`, 520);
+                    doc.text(lines, margin + 10, y);
+                    y += lines.length * lineHeight;
+                    if (y > 760) { doc.addPage(); y = 40; }
+                });
+            }
 
-      if (!fecha){
-        fechaInput.classList.add("date-alert");
-        alert("Por favor, seleccioná una fecha antes de generar el PDF.");
-        fechaInput.focus();
-        return;
-      } else {
-        fechaInput.classList.remove("date-alert");
-      }
+            const nombreArchivo = `Asistencia_${grupo.replace(/\s+/g, '_')}_${fecha}.pdf`;
+            doc.save(nombreArchivo);
+        }
 
-      const doc = new jsPDF({unit:'pt', format:'a4'});
-      const margin = 40;
-      let y = 40;
-      doc.setFontSize(16);
-      doc.text("Asistencia TDM Ferro", margin, y);
-      y += 22;
-      doc.setFontSize(11);
-      doc.text(`Grupo: ${grupo}`, margin, y); y += 16;
-      doc.text(`Fecha: ${fecha}`, margin, y); y += 16;
-      doc.text(`Profesor/a: ${profesor}`, margin, y); y += 22;
+        function limpiar() {
+            document.getElementById("fecha").value = "";
+            document.getElementById("profesor").value = "";
+            document.getElementById("grupo").value = "";
+            document.getElementById("lista-asistencia").innerHTML = "";
+            document.getElementById("nuevoNombre").value = "";
+            document.getElementById("grupo-titulo").textContent = "";
+        }
 
-      doc.setFontSize(12);
-      doc.text("Presentes:", margin, y); y += 16;
-
-      const alumnos = Array.from(document.querySelectorAll("#lista-asistencia .alumno"));
-      const presentes = [];
-      alumnos.forEach(al=>{
-        const label = al.querySelector("label");
-        const check = al.querySelector("input[type='checkbox']");
-        if (check && check.checked) presentes.push(label.textContent);
-      });
-
-      if (presentes.length === 0){
-        doc.text("— Ningún alumno marcado como presente —", margin + 10, y);
-      } else {
-        const lineHeight = 14;
-        presentes.forEach((n,i)=>{
-          const lines = doc.splitTextToSize(`- ${n}`, 520);
-          doc.text(lines, margin + 10, y);
-          y += lines.length * lineHeight;
-          if (y > 760) { doc.addPage(); y = 40; }
+        // Mejora UX: abrir picker al tocar cualquier parte del contenedor en móviles (complementario)
+        document.addEventListener('click', (e) => {
+            const dateWrap = document.querySelector('.date-wrap');
+            if (!dateWrap) return;
+            if (dateWrap.contains(e.target)) {
+                const input = document.getElementById('fecha');
+                // For touch devices, focusing helps open the native picker
+                input.focus();
+                // Some Android browsers require a click event on the input to open picker
+                try { input.click(); } catch (e) { }
+            }
         });
-      }
 
-      const nombreArchivo = `Asistencia_${grupo.replace(/\s+/g,'_')}_${fecha}.pdf`;
-      doc.save(nombreArchivo);
-    }
+        // Accessibility: enable label click to toggle checkbox even if label shrinks
+        document.addEventListener('change', (e) => {
+            if (e.target && e.target.matches('#grupo')) {
+                cargarAlumnos();
+            }
+        });
 
-    function limpiar(){
-      document.getElementById("fecha").value = "";
-      document.getElementById("profesor").value = "";
-      document.getElementById("grupo").value = "";
-      document.getElementById("lista-asistencia").innerHTML = "";
-      document.getElementById("nuevoNombre").value = "";
-      document.getElementById("grupo-titulo").textContent = "";
-    }
+        function construirRegistro() {
+            const fecha = document.getElementById('fecha').value || '(sin fecha)';
+            const profesor = document.getElementById('profesor').value || '(sin profesor)';
+            const grupo = document.getElementById('grupo').value || '(sin grupo)';
+            const alumnos = Array.from(document.querySelectorAll('#lista-asistencia .alumno'))
+                .map(a => {
+                    const nombre = a.querySelector('label').textContent;
+                    const presente = !!a.querySelector('input[type="checkbox"]').checked;
+                    return { nombre, presente };
+                });
+            return { fecha, profesor, grupo, alumnos, creado: new Date().toISOString() };
+        }
 
-    // Mejora UX: abrir picker al tocar cualquier parte del contenedor en móviles (complementario)
-    document.addEventListener('click', (e)=>{
-      const dateWrap = document.querySelector('.date-wrap');
-      if (!dateWrap) return;
-      if (dateWrap.contains(e.target)){
-        const input = document.getElementById('fecha');
-        // For touch devices, focusing helps open the native picker
-        input.focus();
-        // Some Android browsers require a click event on the input to open picker
-        try { input.click(); } catch(e){}
-      }
-    });
+        function formatearTextoParaCopiar(registro) {
+            const { fecha, profesor, grupo, alumnos } = registro;
+            const presentes = alumnos.filter(a => a.presente).map(a => a.nombre);
+            const lineas = [];
+            lineas.push('Asistencia TDM Ferro');
+            lineas.push(`Grupo: ${grupo}`);
+            lineas.push(`Fecha: ${fecha}`);
+            lineas.push(`Profesor/a: ${profesor}`);
+            lineas.push('');
+            lineas.push('Presentes:');
+            if (presentes.length === 0) {
+                lineas.push('— Ningún alumno marcado como presente —');
+            } else {
+                presentes.forEach((n, i) => lineas.push(`${i + 1}. ${n}`));
+            }
+            lineas.push('');
+            lineas.push(`Exportado: ${new Date().toLocaleString()}`);
+            return lineas.join('\n');
+        }
 
-    // Accessibility: enable label click to toggle checkbox even if label shrinks
-    document.addEventListener('change', (e)=>{
-      if (e.target && e.target.matches('#grupo')){
-        cargarAlumnos();
-      }
-    });
+        function copiarAlPortapapeles() {
+            const registro = construirRegistro();
+            const texto = formatearTextoParaCopiar(registro);
 
-    function construirRegistro() {
-  const fecha = document.getElementById('fecha').value || '(sin fecha)';
-  const profesor = document.getElementById('profesor').value || '(sin profesor)';
-  const grupo = document.getElementById('grupo').value || '(sin grupo)';
-  const alumnos = Array.from(document.querySelectorAll('#lista-asistencia .alumno'))
-    .map(a => {
-      const nombre = a.querySelector('label').textContent;
-      const presente = !!a.querySelector('input[type="checkbox"]').checked;
-      return { nombre, presente };
-    });
-  return { fecha, profesor, grupo, alumnos, creado: new Date().toISOString() };
-}
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(texto)
+                    .then(() => alert('✅ Contenido copiado al portapapeles'))
+                    .catch(err => {
+                        console.error(err);
+                        fallbackCopy(texto);
+                    });
+            } else {
+                fallbackCopy(texto);
+            }
+        }
 
-function formatearTextoParaCopiar(registro) {
-  const { fecha, profesor, grupo, alumnos } = registro;
-  const presentes = alumnos.filter(a => a.presente).map(a => a.nombre);
-  const lineas = [];
-  lineas.push('Asistencia TDM Ferro');
-  lineas.push(`Grupo: ${grupo}`);
-  lineas.push(`Fecha: ${fecha}`);
-  lineas.push(`Profesor/a: ${profesor}`);
-  lineas.push('');
-  lineas.push('Presentes:');
-  if (presentes.length === 0) {
-    lineas.push('— Ningún alumno marcado como presente —');
-  } else {
-    presentes.forEach((n, i) => lineas.push(`${i+1}. ${n}`));
-  }
-  lineas.push('');
-  lineas.push(`Exportado: ${new Date().toLocaleString()}`);
-  return lineas.join('\n');
-}
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                const ok = document.execCommand('copy');
+                alert(ok ? '✅ Contenido copiado al portapapeles' : '❌ No se pudo copiar automáticamente, seleccioná y copiá manualmente');
+            } catch (e) {
+                alert('❌ No se pudo copiar automáticamente, seleccioná y copiá manualmente');
+            }
+            ta.remove();
+        }
 
-function copiarAlPortapapeles() {
-  const registro = construirRegistro();
-  const texto = formatearTextoParaCopiar(registro);
+        const toggle = document.getElementById('toggleDark');
+        const root = document.documentElement; // <html>
 
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(texto)
-      .then(() => alert('✅ Contenido copiado al portapapeles'))
-      .catch(err => {
-        console.error(err);
-        fallbackCopy(texto);
-      });
-  } else {
-    fallbackCopy(texto);
-  }
-}
+        function applyDark(isDark) {
+            if (isDark) {
+                root.classList.add('dark');
+                toggle.setAttribute('aria-pressed', 'true');
+                toggle.textContent = '☀️';
+            } else {
+                root.classList.remove('dark');
+                toggle.setAttribute('aria-pressed', 'false');
+                toggle.textContent = '🌙';
+            }
+            localStorage.setItem('tdm-dark', isDark ? '1' : '0');
+        }
 
-function fallbackCopy(text) {
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.position = 'fixed';
-  ta.style.left = '-9999px';
-  document.body.appendChild(ta);
-  ta.select();
-  try {
-    const ok = document.execCommand('copy');
-    alert(ok ? '✅ Contenido copiado al portapapeles' : '❌ No se pudo copiar automáticamente, seleccioná y copiá manualmente');
-  } catch (e) {
-    alert('❌ No se pudo copiar automáticamente, seleccioná y copiá manualmente');
-  }
-  ta.remove();
-}
+        // inicializar según preferencia guardada o preferencia del sistema
+        const saved = localStorage.getItem('tdm-dark');
+        if (saved !== null) {
+            applyDark(saved === '1');
+        } else {
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyDark(prefersDark);
+        }
 
-    const toggle = document.getElementById('toggleDark');
-const root = document.documentElement; // <html>
+        toggle.addEventListener('click', () => applyDark(!root.classList.contains('dark')));
 
-function applyDark(isDark){
-  if (isDark) {
-    root.classList.add('dark');
-    toggle.setAttribute('aria-pressed','true');
-    toggle.textContent = '☀️';
-  } else {
-    root.classList.remove('dark');
-    toggle.setAttribute('aria-pressed','false');
-    toggle.textContent = '🌙';
-  }
-  localStorage.setItem('tdm-dark', isDark ? '1' : '0');
-}
-
-// inicializar según preferencia guardada o preferencia del sistema
-const saved = localStorage.getItem('tdm-dark');
-if (saved !== null) {
-  applyDark(saved === '1');
-} else {
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  applyDark(prefersDark);
-}
-
-toggle.addEventListener('click', ()=> applyDark(!root.classList.contains('dark')));
-
-  </script>
+    </script>
 </body>
 </html>
