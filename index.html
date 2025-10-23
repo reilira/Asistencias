@@ -300,15 +300,17 @@
 
         <div id="lista-asistencia" aria-live="polite"></div>
 
-        <div>
-            <div class="controls">
-                <input type="text" id="nuevoNombre" placeholder="Nombre del alumno nuevo" aria-label="nuevo alumno"
-                    class="centrado">
+        <div id="contenedor-alumno" style="display: none;">
+            <div>
+                <div class="controls">
+                    <input type="text" id="nuevoNombre" placeholder="Nombre del alumno nuevo" aria-label="nuevo alumno"
+                        class="centrado">
+                </div>
             </div>
-        </div>
-        <div class="centrado">
-            <br>
-            <button type="button" onclick="agregarAlumno()">➕ Agregar alumno</button>
+            <div class="centrado">
+                <br>
+                <button type="button" onclick="agregarAlumno()">➕ Agregar alumno</button>
+            </div>
         </div>
 
         <div style="margin-top:14px;">
@@ -349,6 +351,10 @@
             const titulo = document.getElementById("grupo-titulo");
             lista.innerHTML = "";
             titulo.textContent = grupoSel ? `Alumnos de Grilla ${grupoSel}` : "";
+            const contenedorAlumno = document.getElementById("contenedor-alumno");
+
+            // Mostrar u ocultar el input y botón según selección
+            contenedorAlumno.style.display = grupoSel ? "block" : "none";
 
             if (!grupoSel || !grupos[grupoSel]) return;
 
