@@ -532,7 +532,7 @@
             let fechaFormateada = fecha;
             if (fecha && /^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
                 const [yyyy, mm, dd] = fecha.split('-');
-                fechaFormateada = `${dd}-${mm}-${yyyy.slice(-2)}`;
+                fechaFormateada = `${dd}/${mm}/${yyyy}`;
             }
             
             lineas.push('Asistencia TDM Ferro');
