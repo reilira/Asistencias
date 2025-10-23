@@ -354,6 +354,16 @@
 
             const alumnos = [...grupos[grupoSel]].sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
 
+            // 🔘 Crear botón "Marcar todos"
+            const botonMarcar = document.createElement("button");
+            botonMarcar.textContent = "Marcar todos";
+            botonMarcar.className = "btn-marcar-todos";
+            botonMarcar.onclick = () => {
+                const checks = lista.querySelectorAll(".check");
+                checks.forEach(check => check.checked = true);
+            };
+            lista.appendChild(botonMarcar);
+
             alumnos.forEach(nombre => {
                 const id = crearId(nombre);
                 const div = document.createElement("div");
